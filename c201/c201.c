@@ -84,25 +84,16 @@ void DisposeList (tList *L) {
         return;
     }
 
-    tElemPtr curr;
-    tElemPtr next;
-    curr = L->First;
-    next = curr->ptr;
+    tElemPtr next = L->First->ptr;
 
     // 2. Seznam ma jenom 1 prvek
-    if (!next) {
-        free(curr);
-    } else { 
-        // 3. Seznam ma 2 a vice prvky
-        while (next) {
-            free(curr);
-            curr = next;
-            next = next->ptr;
-            if (!next) {
-                free(curr);
-            }
-        }
+    while (next) {
+        free(L->First);
+        L->First = next;
+        next = next->ptr;
     }
+
+    free(L->First);
 
     L->First = NULL;
     L->Act = NULL;
@@ -198,7 +189,7 @@ void PostInsert (tList *L, int val) {
 **/
     tElemPtr newElem;
     if (L->Act) {
-        newElem = (tElemPtr) malloc(sizeof(tElemPtr));
+        newElem = malloc(sizeof(struct tElem));
         if (!newElem) {
             Error();
             return;

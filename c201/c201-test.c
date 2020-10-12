@@ -422,6 +422,7 @@ int main(int argc, char *argv[])	{
 	test_First();
 	ElemValue = 200; test_Actualize();
 	test_Active();
+	test_DisposeList();
     
     printf("\n----------------------- konec příkladu c201 -------------------------\n");
 	
