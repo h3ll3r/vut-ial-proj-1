@@ -1,2 +1,4 @@
-# vut-ial-proj-1
-Project 1 from the subject Algorithms -- Unidirectional Linear Array. 
+# Algorithms - Project 1
+- C201 - Unidirectional Linear Array
+- C203 - Queue Char Array
+- C206 - Bidirectional Linear Array
