@@ -105,7 +105,7 @@ void InsertFirst (tList *L, int val) {
 ** V případě, že není dostatek paměti pro nový prvek při operaci malloc,
 ** volá funkci Error().
 **/
-    tElemPtr newFirst = (tElemPtr) malloc(sizeof(tElemPtr));
+    tElemPtr newFirst = malloc(sizeof(struct tElem));
     if (!newFirst) {
         Error();
         return;
