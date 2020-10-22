@@ -97,6 +97,10 @@ void DLDisposeList (tDLList *L) {
             free(L->First);
         }
     }
+
+    L->Act = NULL;
+    L->First = NULL;
+    L->Last = NULL;
 }
 
 void DLInsertFirst (tDLList *L, int val) {
@@ -215,6 +219,10 @@ void DLDeleteFirst (tDLList *L) {
         tDLElemPtr first = L->First;
         if (L->First->rptr) {
             L->First = L->First->rptr;
+            L->First->lptr = NULL;
+        } else { // first and the only one
+            L->First = NULL;
+            L->Last = NULL;
         }
 
         free(first);
@@ -234,7 +242,11 @@ void DLDeleteLast (tDLList *L) {
         }
 
         tDLElemPtr last = L->Last;
-        if (L->Last->lptr) {
+        // if its only one item
+        if (L->Last == L->First) {
+            L->First = NULL;
+            L->Last = NULL;
+        } else {
             L->Last = L->Last->lptr;
             L->Last->rptr = NULL;
         }
@@ -251,11 +263,15 @@ void DLPostDelete (tDLList *L) {
 **/
 	
 	if (L->Act && L->Act != L->Last) {
-        tDLElemPtr nextToAct = L->Act->rptr;
-        L->Act->rptr = L->Act->rptr->rptr;
-        L->Act->rptr->lptr = L->Act;
+        tDLElemPtr next = L->Act->rptr;
+        L->Act->rptr = next->rptr;
+        if (next->rptr) {
+            next->rptr->lptr = L->Act;
+        } else {
+            L->Last = L->Act;
+        }
 
-        free(nextToAct);
+        free(next);
     }
 }
 
@@ -268,14 +284,14 @@ void DLPreDelete (tDLList *L) {
 	
 	if (L->Act && L->Act != L->First) {
         tDLElemPtr preAct = L->Act->lptr;
-        L->Act->lptr = L->Act->lptr->lptr;
-        if (L->Act->lptr) {
-            L->Act->lptr->rptr = L->Act;
-            if (L->First == preAct) {
-                L->First = L->Act->lptr;
-            }
-        } else {
+        L->Act->lptr = preAct->lptr;
+
+        // first will be deleted
+        if (L->First == preAct) { 
             L->First = L->Act;
+        } else {
+            // item before preAct should point to act
+            preAct->lptr->rptr = L->Act;
         }
 
         free(preAct);
@@ -298,10 +314,15 @@ void DLPostInsert (tDLList *L, int val) {
         }
 
         newElem->data = val;
-
-        L->Act->rptr->lptr = newElem;
         newElem->rptr = L->Act->rptr;
         newElem->lptr = L->Act;
+
+        if (L->Act->rptr) {
+            L->Act->rptr->lptr = newElem;
+        } else {
+            L->Last = newElem;
+        }
+
         L->Act->rptr = newElem;
     }
 }
@@ -323,7 +344,12 @@ void DLPreInsert (tDLList *L, int val) {
 
         newElem->data = val;
 
-        L->Act->lptr->rptr = newElem;
+        if (L->Act != L->First) {
+            L->Act->lptr->rptr = newElem;
+        } else {
+            L->First = newElem;
+        }
+        
         newElem->lptr = L->Act->lptr;
         newElem->rptr = L->Act;
         L->Act->lptr = newElem;
