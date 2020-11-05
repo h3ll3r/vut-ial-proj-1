@@ -1,9 +1,9 @@
 /**/
 /*
  *  Předmět: Algoritmy (IAL) - FIT VUT v Brně
- *  Základní testy pro příklad c201.c (Jednosměrně vázaný lineární seznam)
+ *  Pokročilé testy pro příklad c201.c (Jednosměrně vázaný lineární seznam)
  *  Vytvořil: Martin Tuček, září 2005
- *  Úprava: Bohuslav Křena, říjen 2016
+ *  Úprava: Bohuslav Křena, říjen 2016)
  */
 
 #include "c201.h"
@@ -239,19 +239,19 @@ int test_DisposeList() {
 }
 
 /*******************************************************************************
- * ZÁKLADNÍ TESTY
- * -------------- 
- * Za jejich úspěšné projítí získá student první část bodů za příklad.
- * Při hodnocení však budou použity rozšířené testy, které se zaměří
- * i na okrajové situace. Doporučujeme proto, aby si každý student
- * zkusil tyto základní testy rozšířit o další zajímavé situace.
+ * POKROČILÉ TESTY
+ * --------------- 
+ * Nejsou dostupné studentům při řešení domácích úloh.
+ * Za jejich úspěšné projítí získá student druhou část bodů za příklad.
  *  
  ******************************************************************************/
 
 int main(int argc, char *argv[])	{
-
+	
     printf("Jednosměrně vázaný lineární seznam\n");
     printf("==================================\n");
+
+                            /* Testy 01 až 09 se shodují se základními testy. */
 
     printf("\n[TEST01]\n");
     printf("Inicializace seznamu\n");
@@ -308,7 +308,42 @@ int main(int argc, char *argv[])	{
     printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
     test_Succ();
     test_Active();
+
+           /* Testy 10 až 14 testují chování operací nad neaktivním seznamem. */
+    
+    printf("\n[TEST10]\n");
+    printf("Pokusíme se o aktualizaci při neaktivním seznamu => nic\n");
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    ElemValue=100; 
+    test_Actualize();
+    test_Active();
+
+    printf("\n[TEST11]\n");
+    printf("Pokus o Copy při neaktivním seznamu => ošetřená chyba\n");
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    test_Copy();
 	
+    printf("\n[TEST12]\n");
+    printf("Operace Succ při neaktivním seznamu nesmí zhavarovat.\n");
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    test_Succ();
+    test_Active();
+
+    printf("\n[TEST13]\n");
+    printf("Použití operace CopyFirst při neaktivním seznamu\n");
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    test_CopyFirst();
+
+    printf("\n[TEST14]\n");
+    printf("Vyzkoušíme operaci DeleteFirst při neaktivním seznamu,\n");
+    printf("přičemž smazaný prvek zase vrátíme zpátky do seznamu.\n");
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    test_DeleteFirst();
+    test_InsertFirst();
+    test_Active();
+
+                   /* Testy 15 až 23 se shodují se základními testy 10 až 18. */
+
     printf("\n[TEST10]\n");
     printf("Operace First nastaví aktivitu na první prvek.\n");
     printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
@@ -374,9 +409,54 @@ int main(int argc, char *argv[])	{
     printf("Otestujeme funkčnost operace DisposeList.\n");
     printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
     test_DisposeList();
+
+             /* Testy 24 až 30 testují chování operací nad prázdným seznamem. */
     
+    printf("\n[TEST24]\n");
+    printf("\n");
+    printf("Následuje testování operací při prázdném seznamu\n");
+    printf("================================================\n");
+    test_Active();
+
+    printf("\n[TEST25]\n");
+    printf("DeleteFirst při prázdném seznamu => nic\n");
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    test_DeleteFirst();
+    
+    printf("\n[TEST26]\n");
+    printf("Test PostDelete při prázdném seznamu => nic \n");
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n");
+    test_PostDelete();
+
+    printf("\n[TEST27]\n");
+    printf("Ještě jednou DisposeList => žádná změna\n");
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    test_DisposeList();
+	
+    printf("\n[TEST28]\n");
+    printf("First ani PostInsert nad prázdným seznamem nic nedělá.\n");
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    test_First();
+    ElemValue=201;
+    test_PostInsert();
+
+    printf("\n[TEST29]\n");
+    printf("Copy a CopyFirst nad prázdným seznamem => ošetřená chyba\n");
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    test_Copy();
+    test_CopyFirst();
+
+    printf("\n[TEST30]\n");
+    printf("Actualize ani Succ by neměly mít nad prázdným seznamem žádny efekt.\n");
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    ElemValue=202;
+    test_Actualize();
+    test_Succ();
+    test_Active();
+	
     printf("\n----------------------- konec příkladu c201 -------------------------\n");
 	
-    return(0);
-}	
+	
+	return(0);
+}
 /**/
